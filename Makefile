@@ -22,4 +22,5 @@ demo:
 	echo "Running client & server demo."
 	kitty ./$(OUTPUT_SERVER) $(ADDR) $(PORT) &
 	kitty ./$(OUTPUT_CLIENT) $(ADDR) $(PORT) &
+	kitty ./$(OUTPUT_CLIENT) $(ADDR) $(PORT) &
 
