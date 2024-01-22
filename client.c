@@ -70,19 +70,20 @@ int main(int argc, char *argv[]) {
     int randomPort = rand() % (65535 - 1024 + 1) + 1024;
     char portStr[6];
     sprintf(portStr, "%d", randomPort);
-	move(25, 15);
+	move(4, 4);
 	printw("Connected to server on port %d\n", randomPort);
 
     while ((ch = getch()) != 'Q') {
         ki.timestamp = time(NULL);
         strncpy(ki.input, &ch, 1);
-		printf("Pressed key code %d at time %d", &ch, ki.timestamp);
+		move(2, 4);
+		printw("Pressed key code %d at time %d", &ch, ki.timestamp);
         ki.checksum = adler32(0, ki.input, strlen(ki.input));
         len = send(sockfd, (char*)&ki, sizeof(ki), 0);
         send(sockfd, portStr, strlen(portStr), 0);
         len = recv(sockfd, (char*)&gs, sizeof(ki), 0);
         ki.input[len] = '\0';
-		move(20, 10);
+		move(8, 10);
         printw("Current position: (%d, %d), score %d, port %d\n", gs.X, gs.Y, gs.score, gs.port);
     }
     close(sockfd);
