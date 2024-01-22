@@ -6,6 +6,7 @@
 
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <stdbool.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
@@ -76,13 +77,14 @@ int main(int argc, char *argv[]) {
             close(sockfd);
             close(pipefd[0]); /* Close read end of pipe in child */
 			
+            bool keepRunning = true;
 			KeyboardInput ki;
 			len = recv(sockfd, (char*)&ki, sizeof(ki), 0);
 			char portStr[6];
         	recv(sockfd, portStr, strlen(portStr), 0);
             GameState gs;
             char ch;
-            while (recv(new_sockfd, (char*)&ki, sizeof(ki), 0) > 0) { /* Receive KeyboardInput from client */
+            while ((recv(new_sockfd, (char*)&ki, sizeof(ki), 0) > 0 ) && keepRunning) { /* Receive KeyboardInput from client */
 				ch = ki.input[0]; /* Get the first character from the input */
 				switch (ch) {
 					case KEY_UP:
@@ -98,8 +100,7 @@ int main(int argc, char *argv[]) {
 						gs.X++;
 						break;
 					case 'Q':
-						close(pipefd[1]);
-            			exit(0);
+						keepRunning = false; /* Would be simpler to "goto" outside of this while loop, but less elegant. */
 						break;
 				}
 
@@ -108,6 +109,7 @@ int main(int argc, char *argv[]) {
 				len = send(sockfd, (char*)&gs, sizeof(gs), 0); /* Send game state to client */
             }
             close(pipefd[1]); /* Close write end of pipe in child */
+			close(new_sockfd); /* Added post-demo - I forgot this, overwrote when adding pipe capabilites*/
             exit(0);
         } else {
             close(new_sockfd);
