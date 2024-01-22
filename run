@@ -1,0 +1,4 @@
+#!/bin/bash
+# A little tool I wrote for myself to rapidly test programs when writing. ~KxW aka z523087
+gcc $1.c -o $1.elf
+./$1.elf $2 $3
