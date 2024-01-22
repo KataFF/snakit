@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 	struct sockaddr_in serv;
 	int port;
 	if (argc != 3) {
-		printf("Usage: ./prog host port\n");
+		printf("Usage: ./client.elf host port\n");
 		exit(1);
 	}
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) < 0) {

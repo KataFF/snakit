@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 	socklen_t sin_siz;
 	int port;
 	if (argc != 3) {
-		 printf("Usage: ./prog host port\n");
+		 printf("Usage: ./server.elf host port\n");
 		 exit(1);
 	}
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
