@@ -4,6 +4,9 @@
 ## What is this? Presentation.
 Please see attached `OS-SnakeIT-Final-presentation-Demo-KxW-z523087` for a quick Presentation-form explanation.
 
+## Where is the source code?
+See `client.c` and `server.c`.
+
 ## Running/compiling general instructions:
 For testing each part you can use the `run` script as usual, which compiles and runs the program (if executable is created):
 ```sh
