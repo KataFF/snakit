@@ -2,7 +2,7 @@
 ## Operating Systems and Exercises Final Project "SnakeIT"
 ### Project by Kajetan Wierszelis (カイェタン  ヴィエルシェリス) z523087
 ## What is this? Presentation.
-Please see attached `OS-SnakeIT-Final-presentation-Demo-KxW-z523087` for a quick Presentation-form explanation.
+Please see attached `OS-SnakeIT-Final-presentation-Demo-KxW-z523087` for a quick Presentation-form explanation. It's been virtually unaltered from the in-class presented form.
 
 ## Where is the source code?
 See `client.c` and `server.c`.
