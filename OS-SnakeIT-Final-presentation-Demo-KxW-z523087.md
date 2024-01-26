@@ -30,7 +30,7 @@ Presentation prepared by:
 <!-- paginate: true -->
 
 # 1. Service Name 1/2
-![bg left fit](image.png)
+![bg left fit](snake_nokia3310.png)
 The name came from inspiration of the classic "Snake" game, as once very popular on classic Nokia phones and game consoles. I wanted to reimplement the Snake game in terminal.
 <!-- _footer:  Image from: http://arduino.vn/bai-viet/674-tu-lam-game-snake-ran-moi-voi-arduino-vi-du-ve-viec-su-dung-thu-vien-xu-ly-bat-dong-bo -->
 
