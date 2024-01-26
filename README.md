@@ -23,6 +23,7 @@ It's almost fully automated - see `Makefile`. How to:
 To run it as is, `localhost` has to be set in `/etc/hosts` (it is by default on most Linux distros). Otherwise replace `localhost` with your PC's IP address to send the packets thru LAN. If needed, you can alter the variables inside the `Makefile` like the address, port to allow e.g. for running server and client on separate machines (by default it runs on the same PC).
 
 ## Tools used.
+Project managed under `git`.
 The code was developed using `VS Codium` on `Manjaro Linux GNOME Edition`. For Terminal emulator, I used `kitty`.  See [kitty terminal emulator's website](https://sw.kovidgoyal.net/kitty/.
 
 The Presentation was prepared using `Marp for VS Code` and `VS Codium`. [See website for Marp](https://marp.app/), Note, on Manjaro you need the `vscodium-bin-marketplace` AUR package to enable access to Microsoft's official Extension Marketplace.
