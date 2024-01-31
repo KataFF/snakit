@@ -21,7 +21,7 @@
  */
 
 typedef struct {
-    char input[BUFSIZ];
+    int key;
     time_t timestamp;
     unsigned long checksum;
 } KeyboardInput;
@@ -30,19 +30,21 @@ typedef struct {
     int X;
     int Y;
     int score;
-    int port;
+    uint16_t port;
 } GameState;
 
 int main(int argc, char *argv[]) {
-    int sockfd, len;
-    char buf[BUFSIZ];
     
-    struct sockaddr_in serv;
-    int port;
     if (argc != 3) {
         printf("Usage: ./client.elf host port\n");
         exit(1);
     }
+    
+    int sockfd, len;
+    char buf[BUFSIZ];    
+    struct sockaddr_in serv;
+    uint16_t port;
+
     if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
         perror("socket");
         exit(1);
@@ -55,7 +57,7 @@ int main(int argc, char *argv[]) {
         perror("connect");
         exit(1);
     }
-
+    
     initscr();
     raw();
     noecho();
@@ -66,23 +68,18 @@ int main(int argc, char *argv[]) {
 	GameState gs;
     char ch;
 
-    srand(time(NULL));
-    int randomPort = rand() % (65535 - 1024 + 1) + 1024;
-    char portStr[6];
-    sprintf(portStr, "%d", randomPort);
 	move(4, 4);
-	printw("Connected to server on port %d\n", randomPort);
+	printw("Connected to server.");
 
-    while ((ch = getch()) != 'Q') {
+    while ((ch = getch()) != 'q' && ch != 'Q') {
         ki.timestamp = time(NULL);
-        strncpy(ki.input, &ch, 1);
+        ki.key = ch;
 		move(2, 4);
-		printw("Pressed key code %d at time %d", &ch, ki.timestamp);
-        ki.checksum = adler32(0, ki.input, strlen(ki.input));
+		printw("Pressed key code %d at time %d", ch, ki.timestamp);
+        ki.checksum = adler32(0, (char*)&ki, strlen((char*)&ki));
         len = send(sockfd, (char*)&ki, sizeof(ki), 0);
-        send(sockfd, portStr, strlen(portStr), 0);
         len = recv(sockfd, (char*)&gs, sizeof(ki), 0);
-        ki.input[len] = '\0';
+        ki.key = 0;
 		move(8, 10);
         printw("Current position: (%d, %d), score %d, port %d\n", gs.X, gs.Y, gs.score, gs.port);
     }

@@ -10,11 +10,11 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#include <stddef.h> /*size_t*/
-#include <ncurses.h> // for ki contents
+#include <stddef.h> /* size_t */
+#include <ncurses.h> /* for KeyboardInput structure contents */
 
 typedef struct {
-    char input[BUFSIZ];
+    int key;
     time_t timestamp;
     unsigned long checksum;
 } KeyboardInput;
@@ -23,7 +23,7 @@ typedef struct {
     int X;
     int Y;
     int score;
-    int port;
+    uint16_t port;
 } GameState;
 
 int main(int argc, char *argv[]) {
@@ -79,14 +79,14 @@ int main(int argc, char *argv[]) {
 			
             bool keepRunning = true;
 			KeyboardInput ki;
-			len = recv(sockfd, (char*)&ki, sizeof(ki), 0);
-			char portStr[6];
-        	recv(sockfd, portStr, strlen(portStr), 0);
             GameState gs;
-            char ch;
+            gs.X = 0;
+            gs.Y = 0;
+            gs.score = 0;
+            gs.port = ntohs(clnt.sin_port); /* Add player's port to GameState */
+
             while ((recv(new_sockfd, (char*)&ki, sizeof(ki), 0) > 0 ) && keepRunning) { /* Receive KeyboardInput from client */
-				ch = ki.input[0]; /* Get the first character from the input */
-				switch (ch) {
+				switch (ki.key) {
 					case KEY_UP:
 						gs.Y--;
 						break;
@@ -99,20 +99,20 @@ int main(int argc, char *argv[]) {
 					case KEY_RIGHT:
 						gs.X++;
 						break;
+                    case 'q':    
 					case 'Q':
 						keepRunning = false; /* Would be simpler to "goto" outside of this while loop, but less elegant. */
 						break;
 				}
-
-				gs.port = atoi(portStr); /* Add player's port to GameState */
                 write(pipefd[1], (char*)&gs, sizeof(gs)); /* Write game state to pipe */
 				len = send(sockfd, (char*)&gs, sizeof(gs), 0); /* Send game state to client */
             }
+            printf("client/player on port %s disconnected.", gs.port);
             close(pipefd[1]); /* Close write end of pipe in child */
 			close(new_sockfd); /* Added post-demo - I forgot this, overwrote when adding pipe capabilites*/
             exit(0);
         } else {
-            close(new_sockfd);
+            continue;
         }
     }
 
